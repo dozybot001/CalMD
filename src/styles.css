@@ -2,40 +2,47 @@
   --font-body: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
   --font-ui: "Avenir Next", "Segoe UI Variable Display", "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", "SFMono-Regular", "Cascadia Code", Consolas, var(--font-body);
-  --bg: #d1b791;
-  --bg-mid: #e6d5bf;
-  --bg-deep: #f8f2ea;
-  --bg-canvas: #f8f2ea;
-  --bg-top-shadow: rgba(113, 80, 48, 0.18);
-  --bg-top-glow: rgba(255, 248, 239, 0.3);
-  --bg-bottom-haze: rgba(255, 255, 255, 0.06);
+  --bg: #c89a67;
+  --bg-mid: #e3cdb0;
+  --bg-deep: #faf3ea;
+  --bg-canvas: #faf3ea;
+  --bg-top-shadow: rgba(113, 80, 48, 0.24);
+  --bg-top-glow: rgba(255, 248, 239, 0.42);
+  --bg-bottom-haze: rgba(255, 255, 255, 0.16);
   --app-background: linear-gradient(
     180deg,
     var(--bg) 0%,
-    color-mix(in oklab, var(--bg) 54%, var(--bg-mid)) 12%,
-    var(--bg-mid) 28%,
-    color-mix(in oklab, var(--bg-mid) 38%, var(--bg-deep)) 54%,
+    color-mix(in oklab, var(--bg) 58%, var(--bg-mid)) 11%,
+    var(--bg-mid) 26%,
+    color-mix(in oklab, var(--bg-mid) 42%, var(--bg-deep)) 56%,
     var(--bg-deep) 100%
   );
   --app-background-overlay:
     radial-gradient(
-      118% 34% at 50% -8%,
+      124% 36% at 50% -10%,
       var(--bg-top-shadow) 0%,
-      rgba(113, 80, 48, 0.08) 22%,
-      transparent 46%
+      rgba(113, 80, 48, 0.1) 24%,
+      transparent 52%
     ),
     radial-gradient(
-      84% 24% at 50% 4%,
+      88% 26% at 50% 4%,
       var(--bg-top-glow) 0%,
-      rgba(255, 248, 239, 0.08) 24%,
-      transparent 48%
+      rgba(255, 248, 239, 0.11) 26%,
+      transparent 52%
+    ),
+    radial-gradient(
+      160% 72% at 50% 118%,
+      rgba(255, 255, 255, 0.18) 0%,
+      transparent 58%
     ),
     linear-gradient(
       180deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.02) 72%,
+      rgba(255, 255, 255, 0.04) 70%,
       var(--bg-bottom-haze) 100%
     );
+  --app-background-size: 100% max(1120px, 155vh);
+  --app-background-overlay-opacity: 1;
   --panel: rgba(255, 251, 245, 0.9);
   --panel-solid: #fcf7f0;
   --panel-card-top: rgba(253, 248, 241, 0.96);
@@ -116,6 +123,8 @@
       rgba(0, 0, 0, 0.02) 72%,
       var(--bg-bottom-haze) 100%
     );
+  --app-background-size: 100% max(1120px, 155vh);
+  --app-background-overlay-opacity: 1;
   --panel: rgba(30, 25, 21, 0.82);
   --panel-solid: #1f1915;
   --panel-card-top: rgba(31, 25, 21, 0.93);
@@ -188,7 +197,11 @@
   min-height: 100vh;
   font-family: var(--font-ui);
   color: var(--text);
-  background: var(--bg-canvas);
+  background-color: var(--bg-canvas);
+  background-image: var(--app-background);
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: var(--app-background-size);
   transition:
     background 640ms cubic-bezier(0.22, 1, 0.36, 1),
     color 440ms ease;
@@ -214,7 +227,8 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: var(--app-background-overlay), var(--app-background);
+  background: var(--app-background-overlay);
+  opacity: var(--app-background-overlay-opacity);
   transition:
     background 640ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 440ms ease;
