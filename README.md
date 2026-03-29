@@ -67,7 +67,7 @@ npm run preview
 - 变更范围尽量聚焦
 - 文档和交互说明与代码保持一致
 
-更具体的流程见 [CONTRIBUTING.md](./CONTRIBUTING.md)。
+更具体的流程见 [CONTRIBUTING.md](./.github/CONTRIBUTING.md)。
 
 ## License
 
