@@ -19,7 +19,7 @@ import SearchableContent from "./components/SearchableContent";
 import TocList from "./components/TocList";
 import { WELCOME_MARKDOWN } from "./content/welcome";
 import { exportLongImage } from "./lib/exportLongImage";
-import { extractToc } from "./lib/markdown";
+import { extractMermaidBlocks, extractToc } from "./lib/markdown";
 import {
   initLaunchQueue,
   setFileLaunchHandler,
@@ -283,6 +283,10 @@ function createInitialReaderSession(): InitialReaderSession {
   };
 }
 
+function isPreviewReadyForMarkdown(markdown: string, viewMode: ViewMode): boolean {
+  return viewMode !== "preview" || extractMermaidBlocks(markdown).length === 0;
+}
+
 function getInitialTheme(): ThemeMode {
   if (typeof window === "undefined") {
     return "light";
@@ -386,6 +390,10 @@ export default function App() {
   const [isLongImageExporting, setIsLongImageExporting] = useState(false);
   const [focusedImage, setFocusedImage] = useState<FocusedImage | null>(null);
   const [recentDocuments, setRecentDocuments] = useState(readStoredRecentDocuments);
+  const [isPreviewContentReady, setIsPreviewContentReady] = useState(
+    initialReaderSession.viewMode !== "preview" ||
+      extractMermaidBlocks(initialReaderSession.documentState.markdown).length === 0,
+  );
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const loadFileRef = useRef<(file: File | null) => void>(() => {});
   const controlSurfaceRef = useRef<HTMLDivElement | null>(null);
@@ -403,7 +411,30 @@ export default function App() {
   const sectionsCount = documentState.toc.length;
   const progressPercent = Math.max(0, Math.min(100, Math.round(readingProgress * 100)));
   const searchableContentVersion =
-    `${viewMode}:${viewMode === "preview" ? deferredMarkdown : documentState.markdown}`;
+    `${viewMode}:${viewMode === "preview" ? deferredMarkdown : documentState.markdown}:${isPreviewContentReady ? "ready" : "loading"}`;
+
+  useEffect(() => {
+    if (viewMode !== "preview") {
+      return;
+    }
+
+    if (isPreviewContentReady) {
+      return;
+    }
+
+    const html = document.documentElement;
+    const body = document.body;
+    const previousHtmlOverflow = html.style.overflow;
+    const previousBodyOverflow = body.style.overflow;
+
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+
+    return () => {
+      html.style.overflow = previousHtmlOverflow;
+      body.style.overflow = previousBodyOverflow;
+    };
+  }, [isPreviewContentReady, viewMode]);
 
   useLayoutEffect(() => {
     applyThemeToRoot(theme);
@@ -476,9 +507,7 @@ export default function App() {
       if (usesActionChord && key === "v") {
         event.preventDefault();
         setIsControlsOpen(false);
-        setViewMode((current) =>
-          current === "preview" ? "source" : "preview",
-        );
+        toggleViewMode();
         return;
       }
 
@@ -509,7 +538,7 @@ export default function App() {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [focusedImage, isControlsOpen, isSearchOpen, searchQuery, theme]);
+  }, [focusedImage, isControlsOpen, isSearchOpen, searchQuery, theme, viewMode, documentState.markdown]);
 
   useEffect(() => {
     if (!isControlsOpen) {
@@ -529,7 +558,7 @@ export default function App() {
   }, [isControlsOpen]);
 
   useEffect(() => {
-    if (viewMode !== "preview") {
+    if (viewMode !== "preview" || !isPreviewContentReady) {
       return;
     }
 
@@ -614,10 +643,10 @@ export default function App() {
       window.removeEventListener("scroll", requestSync);
       window.removeEventListener("resize", requestSync);
     };
-  }, [deferredMarkdown, viewMode]);
+  }, [deferredMarkdown, isPreviewContentReady, viewMode]);
 
   useEffect(() => {
-    if (!activeHeadingId || viewMode !== "preview") {
+    if (!activeHeadingId || viewMode !== "preview" || !isPreviewContentReady) {
       return;
     }
 
@@ -646,10 +675,10 @@ export default function App() {
     });
 
     return () => window.cancelAnimationFrame(frame);
-  }, [activeHeadingId, viewMode]);
+  }, [activeHeadingId, isPreviewContentReady, viewMode]);
 
   useEffect(() => {
-    if (!pendingScrollId || viewMode !== "preview") {
+    if (!pendingScrollId || viewMode !== "preview" || !isPreviewContentReady) {
       return;
     }
 
@@ -681,11 +710,15 @@ export default function App() {
       window.cancelAnimationFrame(frameOne);
       window.cancelAnimationFrame(frameTwo);
     };
-  }, [pendingScrollId, viewMode, deferredMarkdown, isControlsOpen]);
+  }, [pendingScrollId, viewMode, deferredMarkdown, isControlsOpen, isPreviewContentReady]);
 
   useEffect(() => {
     if (pendingRestoreScrollY === null) {
       isRestoringPositionRef.current = false;
+      return;
+    }
+
+    if (viewMode === "preview" && !isPreviewContentReady) {
       return;
     }
 
@@ -706,13 +739,18 @@ export default function App() {
       window.cancelAnimationFrame(frameOne);
       window.cancelAnimationFrame(frameTwo);
     };
-  }, [deferredMarkdown, pendingRestoreScrollY, viewMode]);
+  }, [deferredMarkdown, pendingRestoreScrollY, viewMode, isPreviewContentReady]);
 
   useEffect(() => {
     let frame = 0;
 
     const syncReadingProgress = () => {
       frame = 0;
+
+      if (viewMode === "preview" && !isPreviewContentReady) {
+        setReadingProgress(0);
+        return;
+      }
 
       if (!documentBodyRef.current) {
         setReadingProgress(0);
@@ -741,9 +779,13 @@ export default function App() {
       window.removeEventListener("scroll", requestSync);
       window.removeEventListener("resize", requestSync);
     };
-  }, [deferredMarkdown, documentState.documentKey, viewMode]);
+  }, [deferredMarkdown, documentState.documentKey, viewMode, isPreviewContentReady]);
 
   useEffect(() => {
+    if (viewMode === "preview" && !isPreviewContentReady) {
+      return;
+    }
+
     let timeoutId = 0;
 
     const persistCurrentPosition = () => {
@@ -773,7 +815,7 @@ export default function App() {
       window.removeEventListener("scroll", schedulePersist);
       window.removeEventListener("pagehide", persistCurrentPosition);
     };
-  }, [documentState.documentKey, viewMode]);
+  }, [documentState.documentKey, viewMode, isPreviewContentReady]);
 
   function rememberRecentDocument(nextDocumentState: DocumentState) {
     const nextRecentDocument: RecentDocument = {
@@ -793,6 +835,7 @@ export default function App() {
     options?: { rememberRecent?: boolean },
   ) {
     const savedState = getSavedReadingState(nextDocumentState.documentKey);
+    const nextViewMode = savedState?.viewMode ?? "preview";
 
     if (options?.rememberRecent) {
       rememberRecentDocument(nextDocumentState);
@@ -801,7 +844,8 @@ export default function App() {
     startTransition(() => {
       isRestoringPositionRef.current = true;
       setDocumentState(nextDocumentState);
-      setViewMode(savedState?.viewMode ?? "preview");
+      setViewMode(nextViewMode);
+      setIsPreviewContentReady(isPreviewReadyForMarkdown(nextDocumentState.markdown, nextViewMode));
       setPendingRestoreScrollY(savedState?.scrollY ?? 0);
       setIsSearchOpen(false);
       setSearchQuery("");
@@ -1027,12 +1071,15 @@ export default function App() {
     setActiveHeadingId(id);
     setPendingScrollId(id);
     if (viewMode !== "preview") {
+      setIsPreviewContentReady(isPreviewReadyForMarkdown(documentState.markdown, "preview"));
       setViewMode("preview");
     }
   }
 
   function toggleViewMode() {
-    setViewMode((current) => (current === "preview" ? "source" : "preview"));
+    const nextViewMode = viewMode === "preview" ? "source" : "preview";
+    setIsPreviewContentReady(isPreviewReadyForMarkdown(documentState.markdown, nextViewMode));
+    setViewMode(nextViewMode);
   }
 
   function toggleWidthMode() {
@@ -1202,8 +1249,11 @@ export default function App() {
               >
                 {viewMode === "preview" ? (
                   <MarkdownRenderer
+                    key={`${documentState.documentKey}:${theme}`}
                     markdown={deferredMarkdown}
+                    theme={theme}
                     onOpenImage={handleOpenImage}
+                    onReadyStateChange={setIsPreviewContentReady}
                   />
                 ) : (
                   <pre className="source-view">

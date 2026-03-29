@@ -13,6 +13,7 @@ export type TocItem = {
 type LooseNode = {
   type?: string;
   depth?: number;
+  lang?: string;
   value?: string;
   alt?: string;
   children?: LooseNode[];
@@ -62,4 +63,19 @@ export function extractToc(markdown: string): TocItem[] {
   });
 
   return toc;
+}
+
+export function extractMermaidBlocks(markdown: string): string[] {
+  const tree = unified().use(remarkParse).use(remarkGfm).parse(markdown) as LooseNode;
+  const blocks: string[] = [];
+
+  visit(tree as never, "code", (node: LooseNode) => {
+    if (node.lang?.toLowerCase() !== "mermaid") {
+      return;
+    }
+
+    blocks.push(node.value ?? "");
+  });
+
+  return blocks;
 }

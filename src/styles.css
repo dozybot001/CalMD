@@ -1115,6 +1115,60 @@ img {
   max-width: var(--measure-relaxed);
 }
 
+.article-loading {
+  min-height: min(48vh, 420px);
+  display: grid;
+  place-items: center;
+  padding: 1.4rem 0 1rem;
+}
+
+.article-loading__panel {
+  width: min(100%, 620px);
+  padding: 1.35rem 1.4rem;
+  border: 1px solid rgba(168, 118, 77, 0.16);
+  border-radius: 22px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 251, 246, 0.46) 0%,
+    rgba(247, 239, 229, 0.3) 100%
+  );
+}
+
+.calmmd-root[data-theme="dark"] .article-loading__panel {
+  border-color: rgba(231, 196, 158, 0.12);
+  background: linear-gradient(
+    180deg,
+    rgba(49, 39, 32, 0.76) 0%,
+    rgba(39, 31, 26, 0.58) 100%
+  );
+}
+
+.article-loading__eyebrow,
+.article-loading__title,
+.article-loading__text {
+  margin: 0;
+}
+
+.article-loading__eyebrow {
+  color: var(--muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.article-loading__title {
+  margin-top: 0.34rem;
+  font-size: clamp(1.3rem, 1.16rem + 0.5vw, 1.6rem);
+  line-height: 1.18;
+  color: var(--text);
+}
+
+.article-loading__text {
+  margin-top: 0.72rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
 .article-body {
   color: var(--text);
   font-family: var(--font-body);

@@ -1,78 +1,14 @@
-import { useEffect, useId, useRef, useState } from "react";
-import mermaid from "mermaid";
-
-mermaid.initialize({
-  startOnLoad: false,
-  theme: "default",
-  securityLevel: "strict",
-  fontFamily: "inherit",
-});
-
-type MermaidTheme = "dark" | "default";
-
-function useCalMDTheme(): MermaidTheme {
-  const [theme, setTheme] = useState<MermaidTheme>(() => {
-    const root = document.querySelector(".calmmd-root");
-    return root?.getAttribute("data-theme") === "dark" ? "dark" : "default";
-  });
-
-  useEffect(() => {
-    const root = document.querySelector(".calmmd-root");
-    if (!root) return;
-
-    const observer = new MutationObserver(() => {
-      const next: MermaidTheme = root.getAttribute("data-theme") === "dark" ? "dark" : "default";
-      setTheme(next);
-    });
-
-    observer.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => observer.disconnect();
-  }, []);
-
-  return theme;
-}
-
 type MermaidBlockProps = {
   code: string;
+  svg?: string;
+  error?: string;
 };
 
-export default function MermaidBlock({ code }: MermaidBlockProps) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const [svg, setSvg] = useState("");
-  const [error, setError] = useState("");
-  const uniqueId = `mermaid-${useId().replace(/:/g, "")}`;
-  const theme = useCalMDTheme();
-
-  useEffect(() => {
-    let cancelled = false;
-
-    mermaid.initialize({
-      startOnLoad: false,
-      theme,
-      securityLevel: "strict",
-      fontFamily: "inherit",
-    });
-
-    mermaid
-      .render(uniqueId, code.trim())
-      .then(({ svg: renderedSvg }) => {
-        if (!cancelled) {
-          setSvg(renderedSvg);
-          setError("");
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setError("图表渲染失败");
-          setSvg("");
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [code, uniqueId, theme]);
-
+export default function MermaidBlock({
+  code,
+  svg = "",
+  error = "",
+}: MermaidBlockProps) {
   if (error) {
     return (
       <div className="mermaid-block mermaid-block--error">
@@ -94,7 +30,6 @@ export default function MermaidBlock({ code }: MermaidBlockProps) {
 
   return (
     <div
-      ref={containerRef}
       className="mermaid-block"
       dangerouslySetInnerHTML={{ __html: svg }}
     />
