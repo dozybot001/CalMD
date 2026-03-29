@@ -307,6 +307,16 @@ function applyThemeToRoot(theme: ThemeMode) {
     return;
   }
 
+  const html = document.documentElement;
+  const body = document.body;
+  const pageBackground = theme === "dark" ? "#0f0b08" : "#faf3ea";
+
+  html.dataset.theme = theme;
+  html.style.colorScheme = theme;
+  html.style.backgroundColor = pageBackground;
+  body.style.backgroundColor = pageBackground;
+  body.style.colorScheme = theme;
+
   const root = document.querySelector(".calmmd-root") as HTMLElement | null;
   if (root) {
     root.dataset.theme = theme;
