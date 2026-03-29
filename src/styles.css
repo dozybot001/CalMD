@@ -651,7 +651,7 @@ img {
   --side-rail-item-text-color-active: var(--text);
   --side-rail-item-hover-bg: rgba(152, 103, 67, 0.08);
   --side-rail-item-active-bg: rgba(152, 103, 67, 0.14);
-  --side-rail-panel-max-width: min(560px, calc(100vw - 236px));
+  --side-rail-panel-max-width: min(780px, calc(100vw - 236px));
   --side-rail-section-gap: 18px;
   position: fixed;
   top: 24px;
