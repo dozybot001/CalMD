@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="paper" data-font="serif">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CalMD — Quiet Markdown Reader</title>
+    <meta
+      name="description"
+      content="CalMD is a pure, quiet, browser-based Markdown reader built for distraction-free fullscreen reading."
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <script>
+      (function () {
+        var BG = { paper: '#faf8f4', sepia: '#f3ecd8', mist: '#1b1c1f', ink: '#0f1012' };
+        var DARK = { mist: true, ink: true };
+        try {
+          var raw = localStorage.getItem('calmd.prefs.v1');
+          var prefs = raw ? JSON.parse(raw) : null;
+          var theme = prefs && BG[prefs.theme] ? prefs.theme : 'paper';
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          if (prefs && (prefs.font === 'serif' || prefs.font === 'sans' || prefs.font === 'mono')) {
+            root.dataset.font = prefs.font;
+          }
+          root.style.backgroundColor = BG[theme];
+          root.style.colorScheme = DARK[theme] ? 'dark' : 'light';
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="./assets/index-D9WIGvLY.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/mermaid-CHIzsD8r.js">
+    <link rel="modulepreload" crossorigin href="./assets/hljs-DlrB-f6O.js">
+    <link rel="modulepreload" crossorigin href="./assets/katex-HP8lGamR.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-BtI6unAH.css">
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
