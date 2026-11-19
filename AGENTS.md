@@ -20,4 +20,11 @@
 
 - 运行 `npm test` 与 `npm run build`，确保 TypeScript 类型检查、单测与静态打包全部通过。
 - 中英文界面文字保持同步（`src/core/i18n.ts`），用户可见改动同步更新 `CHANGELOG.md`、`README.md` 与 `README.zh-CN.md`。
-- 仓库只保留本项目文件，不留临时输出或未说明的冗余文件。
+- 直接在 `main` 上开发与提交，提交前运行 `gitleaks git --pre-commit --staged`，提交信息不带 `Co-Authored-By`。
+- 仓库只保留本项目文件，不留临时输出或未说明的冗余文件；网站图标始终使用 CalMD 专属 Logo（`public/favicon.svg`）。
+
+## 当前状态（2026-11-19）
+
+- `0.1.0` MVP 已就绪：拖拽/选择导入 `.md` 与本地含图文件夹、剪贴板粘贴、全屏沉浸阅读（`F`）与自动隐藏顶栏、段落专注聚光（`S`）、4 套纸张主题、字号/字体/版心/行距调节、目录大纲与文件夹切换、GFM/代码高亮/KaTeX/按需 Mermaid/Lightbox 与 IndexedDB 本地阅读进度记忆。
+- 后续所有新特性继续从**「纯粹、安静的沉浸式阅读」**这一核心卖点出发演进。
+
