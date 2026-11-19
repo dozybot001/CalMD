@@ -9,6 +9,24 @@
       content="CalMD is a pure, quiet, browser-based Markdown reader built for distraction-free fullscreen reading."
     />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <script>
+      (function () {
+        var BG = { paper: '#faf8f4', sepia: '#f3ecd8', mist: '#1b1c1f', ink: '#0f1012' };
+        var DARK = { mist: true, ink: true };
+        try {
+          var raw = localStorage.getItem('calmd.prefs.v1');
+          var prefs = raw ? JSON.parse(raw) : null;
+          var theme = prefs && BG[prefs.theme] ? prefs.theme : 'paper';
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          if (prefs && (prefs.font === 'serif' || prefs.font === 'sans' || prefs.font === 'mono')) {
+            root.dataset.font = prefs.font;
+          }
+          root.style.backgroundColor = BG[theme];
+          root.style.colorScheme = DARK[theme] ? 'dark' : 'light';
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="app"></div>

@@ -83,26 +83,39 @@ body.focus-mode .prose > *:hover {
 }
 
 .prose h1 {
-  font-size: 2.05em;
-  margin: 0 0 1.25em;
-  padding-bottom: 0.5em;
+  font-size: 2.02em;
+  margin: 1.8em 0 1.2em;
+  padding-bottom: 0.48em;
   border-bottom: 1px solid var(--border);
 }
 
 .prose h2 {
-  font-size: 1.48em;
-  margin: 2.4em 0 0.85em;
+  font-size: 1.46em;
+  margin: 2.35em 0 0.82em;
 }
 
 .prose h3 {
-  font-size: 1.22em;
-  margin: 1.9em 0 0.65em;
+  font-size: 1.2em;
+  margin: 1.85em 0 0.62em;
 }
 
 .prose h4 {
   font-size: 1.05em;
-  margin: 1.6em 0 0.55em;
+  margin: 1.55em 0 0.52em;
   color: var(--text-secondary);
+}
+
+.prose h5 {
+  font-size: 0.96em;
+  margin: 1.35em 0 0.45em;
+  color: var(--text-secondary);
+}
+
+.prose h6 {
+  font-size: 0.88em;
+  margin: 1.25em 0 0.4em;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
 }
 
 .prose p {
@@ -131,6 +144,116 @@ body.focus-mode .prose > *:hover {
   font-style: italic;
 }
 
+/* 中文标点统一略淡，让正文墨色层级更清透 */
+.prose .cjk-punct {
+  color: color-mix(in srgb, currentColor 64%, transparent);
+}
+
+/* 直角引号「」『』：长横短竖、轻抬微探入文字对角（保留原字符供复制） */
+.prose .cjk-bracket {
+  position: relative;
+  display: inline-block;
+  width: 0.24em;
+  height: 0.94em;
+  line-height: 1;
+  vertical-align: -0.1em;
+  color: transparent;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.prose .cjk-bracket::before,
+.prose .cjk-bracket-double::after {
+  content: '';
+  position: absolute;
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 0;
+  border-color: color-mix(in srgb, var(--text) 52%, transparent);
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+.prose blockquote .cjk-bracket::before,
+.prose blockquote .cjk-bracket-double::after {
+  border-color: color-mix(in srgb, var(--text-secondary) 58%, transparent);
+}
+
+.prose .cjk-bracket::before {
+  width: 0.28em;
+  height: 0.44em;
+}
+
+.prose .cjk-bracket-open {
+  margin: 0 0.18em 0 0.22em;
+}
+
+.prose .cjk-bracket-open::before {
+  top: -0.14em;
+  left: 0;
+  border-top-width: 0.095em;
+  border-left-width: 0.095em;
+}
+
+.prose .cjk-bracket-close {
+  margin: 0 0.22em 0 0.18em;
+}
+
+.prose .cjk-bracket-close::before {
+  bottom: -0.14em;
+  right: 0;
+  border-bottom-width: 0.095em;
+  border-right-width: 0.095em;
+}
+
+.prose .cjk-bracket-double::after {
+  width: 0.18em;
+  height: 0.32em;
+}
+
+.prose .cjk-bracket-open.cjk-bracket-double::after {
+  top: 0.02em;
+  left: 0.11em;
+  border-top-width: 0.08em;
+  border-left-width: 0.08em;
+}
+
+.prose .cjk-bracket-close.cjk-bracket-double::after {
+  bottom: 0.02em;
+  right: 0.11em;
+  border-bottom-width: 0.08em;
+  border-right-width: 0.08em;
+}
+
+.prose s,
+.prose del {
+  color: var(--text-muted);
+  text-decoration-thickness: 1px;
+}
+
+.prose mark {
+  background: var(--accent-soft);
+  color: var(--text);
+  padding: 0.06em 0.28em;
+  border-radius: 4px;
+}
+
+.prose sub,
+.prose sup {
+  font-size: 0.74em;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.prose sup {
+  top: -0.45em;
+}
+
+.prose sub {
+  bottom: -0.22em;
+}
+
 .prose hr {
   border: none;
   height: 1px;
@@ -139,7 +262,7 @@ body.focus-mode .prose > *:hover {
   width: 38%;
 }
 
-/* 列表与任务清单 */
+/* 列表与 GFM 任务清单 */
 .prose ul,
 .prose ol {
   margin: 0 0 1.35em;
@@ -154,57 +277,106 @@ body.focus-mode .prose > *:hover {
   margin: 0.4em 0;
 }
 
+.prose li > ul,
+.prose li > ol {
+  margin: 0.35em 0 0.25em;
+}
+
 .prose ul.task-list {
   list-style: none;
-  padding-left: 0.2em;
+  padding-left: 0.1em;
 }
 
 .prose li.task-list-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6em;
+  position: relative;
+  padding-left: 1.6em;
 }
 
-.prose li.task-list-item > input[type='checkbox'] {
-  margin-top: 0.42em;
-  flex-shrink: 0;
-  width: 1em;
-  height: 1em;
-  accent-color: var(--accent);
-  cursor: default;
+.prose li.task-list-item > p:first-child {
+  margin-top: 0;
 }
 
-/* 引用 */
+.prose li.task-list-item input.task-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  position: absolute;
+  left: 0;
+  top: calc((var(--reader-line-height, 1.82) * 1em - 0.94em) / 2);
+  margin: 0;
+  width: 0.94em;
+  height: 0.94em;
+  border-radius: 0.24em;
+  border: 1.5px solid var(--border-strong);
+  background: transparent;
+  pointer-events: none;
+}
+
+.prose li.task-list-item input.task-checkbox:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.prose li.task-list-item input.task-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 0.26em;
+  height: 0.5em;
+  border-right: 1.8px solid var(--accent-text);
+  border-bottom: 1.8px solid var(--accent-text);
+  transform: translate(-50%, -50%) rotate(42deg);
+}
+
+/* 正文引用：纯粹书卷缩进 + 极细中性纸边线，无色条卡片底色 */
 .prose blockquote {
-  margin: 1.6em 0;
-  padding: 0.65em 1.25em;
-  border-left: 2.5px solid var(--accent);
-  background: var(--quote-bg);
-  border-radius: 0 8px 8px 0;
+  margin: 1.5em 0;
+  padding: 0.08em 0 0.08em 1.2em;
+  border-left: 1.5px solid var(--border-strong);
+  background: transparent;
   color: var(--text-secondary);
+}
+
+.prose blockquote > p:first-child {
+  margin-top: 0;
 }
 
 .prose blockquote > p:last-child {
   margin-bottom: 0;
 }
 
-/* GitHub Callout 提示框 */
+.prose blockquote blockquote {
+  margin: 0.85em 0;
+}
+
+/* GitHub Callout 提示框：柔和底色 + 1px 细边框 + 语义图标（去掉旧式粗左色条） */
 .prose .callout {
+  --callout-tone: var(--accent);
+  --callout-bg: var(--surface);
   margin: 1.6em 0;
-  padding: 0.95em 1.2em;
+  padding: 0.92em 1.15em;
   border-radius: 10px;
-  border-left: 3px solid var(--accent);
-  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--callout-tone) 22%, transparent);
+  background: var(--callout-bg);
   font-size: 0.94em;
 }
 
 .prose .callout-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
   font-family: var(--font-sans);
   font-size: 0.78rem;
-  font-weight: 650;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  margin-bottom: 0.45rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--callout-tone);
+  margin-bottom: 0.42rem;
+}
+
+.prose .callout-title svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
 }
 
 .prose .callout > p:last-child {
@@ -212,43 +384,48 @@ body.focus-mode .prose > *:hover {
 }
 
 .prose .callout-note {
-  border-left-color: var(--note-color);
-  background: var(--note-bg);
-}
-.prose .callout-note .callout-title {
-  color: var(--note-color);
+  --callout-tone: var(--note-color);
+  --callout-bg: var(--note-bg);
 }
 
 .prose .callout-tip {
-  border-left-color: var(--tip-color);
-  background: var(--tip-bg);
-}
-.prose .callout-tip .callout-title {
-  color: var(--tip-color);
+  --callout-tone: var(--tip-color);
+  --callout-bg: var(--tip-bg);
 }
 
 .prose .callout-important {
-  border-left-color: var(--important-color);
-  background: var(--important-bg);
-}
-.prose .callout-important .callout-title {
-  color: var(--important-color);
+  --callout-tone: var(--important-color);
+  --callout-bg: var(--important-bg);
 }
 
 .prose .callout-warning {
-  border-left-color: var(--warning-color);
-  background: var(--warning-bg);
-}
-.prose .callout-warning .callout-title {
-  color: var(--warning-color);
+  --callout-tone: var(--warning-color);
+  --callout-bg: var(--warning-bg);
 }
 
 .prose .callout-caution {
-  border-left-color: var(--caution-color);
-  background: var(--caution-bg);
+  --callout-tone: var(--caution-color);
+  --callout-bg: var(--caution-bg);
 }
-.prose .callout-caution .callout-title {
-  color: var(--caution-color);
+
+/* 折叠块 details / summary */
+.prose details {
+  margin: 1.4em 0;
+  padding: 0.75em 1.05em;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.prose summary {
+  cursor: pointer;
+  font-weight: 550;
+  color: var(--text);
+  list-style-position: outside;
+}
+
+.prose details[open] > summary {
+  margin-bottom: 0.65em;
 }
 
 /* 行内代码 */
@@ -262,56 +439,111 @@ body.focus-mode .prose > *:hover {
   color: var(--text);
 }
 
-/* 代码块 */
+/* 代码块：无冗余顶栏，右上角轻量图标复制与可选微弱语言标记 */
 .prose .code-block {
-  margin: 1.75em 0;
-  border-radius: 11px;
+  position: relative;
+  margin: 1.65em 0;
+  border-radius: 10px;
   background: var(--code-bg);
   border: 1px solid var(--code-border);
   overflow: hidden;
 }
 
-.prose .code-header {
-  display: flex;
+.prose .code-tools {
+  position: absolute;
+  top: 0.46rem;
+  right: 0.5rem;
+  z-index: 2;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.45rem 0.9rem;
-  border-bottom: 1px solid var(--code-border);
-  font-family: var(--font-sans);
-  font-size: 0.74rem;
-  color: var(--text-muted);
+  gap: 0.32rem;
 }
 
 .prose .code-lang {
-  text-transform: lowercase;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  line-height: 1;
   letter-spacing: 0.03em;
+  text-transform: lowercase;
+  color: var(--text-muted);
+  opacity: 0.72;
+  padding: 0.22rem 0.4rem;
+  user-select: none;
+  pointer-events: none;
 }
 
 .prose .code-copy {
-  border: none;
-  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--code-bg) 82%, transparent);
   color: var(--text-muted);
-  font-family: var(--font-sans);
-  font-size: 0.74rem;
-  padding: 0.15rem 0.45rem;
-  border-radius: 5px;
   cursor: pointer;
-  transition: color 150ms ease, background-color 150ms ease;
+  opacity: 0.36;
+  transition:
+    opacity 150ms ease,
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.prose .code-block:hover .code-copy,
+.prose .code-block:focus-within .code-copy,
+.prose .code-copy.is-copied {
+  opacity: 1;
 }
 
 .prose .code-copy:hover {
   color: var(--text);
   background: var(--surface-hover);
+  border-color: var(--border);
+}
+
+.prose .code-copy.is-copied {
+  color: var(--accent);
+}
+
+.prose .code-copy svg {
+  width: 15px;
+  height: 15px;
+}
+
+@media (hover: none) {
+  .prose .code-copy {
+    opacity: 0.76;
+  }
 }
 
 .prose .code-block pre {
   margin: 0;
-  padding: 1.05rem 1.15rem;
+  padding: 0.95rem 2.75rem 0.95rem 1.15rem;
   overflow-x: auto;
   font-family: var(--font-mono);
   font-size: 0.84em;
   line-height: 1.62;
   tab-size: 2;
+}
+
+.prose .code-block[data-lang] pre {
+  padding: 2rem 1.15rem 1rem;
+}
+
+/* 裸 pre 兜底 */
+.prose > pre {
+  margin: 1.65em 0;
+  padding: 0.95rem 1.15rem;
+  border-radius: 10px;
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.84em;
+  line-height: 1.62;
 }
 
 .prose pre code {
@@ -369,7 +601,7 @@ body.focus-mode .prose > *:hover {
   color: var(--hljs-addition);
 }
 
-/* 表格（横向安全滚动，无多余竖线） */
+/* 表格（横向安全滚动，表头自然换行不撑爆列宽） */
 .prose .table-wrap {
   margin: 1.8em 0;
   overflow-x: auto;
@@ -379,14 +611,15 @@ body.focus-mode .prose > *:hover {
 .prose table {
   width: 100%;
   border-collapse: collapse;
-  font-family: var(--font-sans);
-  font-size: 0.88em;
-  line-height: 1.55;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9em;
+  line-height: 1.58;
 }
 
 .prose th,
 .prose td {
-  padding: 0.7em 0.9em;
+  padding: 0.68em 0.88em;
   text-align: left;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
@@ -396,21 +629,25 @@ body.focus-mode .prose > *:hover {
   font-weight: 600;
   color: var(--text);
   border-bottom: 1.5px solid var(--border-strong);
-  white-space: nowrap;
 }
 
 .prose tbody tr:hover {
   background: var(--surface);
 }
 
-/* 图片与 Lightbox 提示 */
+/* 图片：区分行内小图/徽章与独立成段大图 */
 .prose img.readable-img {
-  display: block;
   max-width: 100%;
   height: auto;
+  vertical-align: middle;
+  border-radius: 6px;
+  cursor: zoom-in;
+}
+
+.prose img.readable-img.readable-img-block {
+  display: block;
   margin: 1.8em auto;
   border-radius: 10px;
-  cursor: zoom-in;
   box-shadow: var(--shadow-sm);
 }
 
@@ -453,9 +690,14 @@ body.focus-mode .prose > *:hover {
 @media print {
   .reader-bar,
   .progress-bar,
+  .chrome-reveal-zone,
   .drawer,
+  .drawer-backdrop,
   .popover,
-  .toast {
+  .modal-backdrop,
+  .lightbox,
+  .toast,
+  .prose .code-tools {
     display: none !important;
   }
   .reader-main {

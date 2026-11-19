@@ -43,10 +43,12 @@ export function enterQuietReading(doc: string): void {
 | 快捷键 | 动作 | 适用场景 |
 | --- | --- | --- |
 | \`F\` | 全屏沉浸阅读 | 长文精读、无干扰浏览 |
-| \`T\` | 展开 / 收起目录 | 快速跳转技术文档章节 |
-| \`A\` | 纸张、字体与版心 | 切换素纸 / 暖笺 / 微墨 / 静夜 |
+| \`T\` / \`B\` | 目录大纲 / 文件夹列表 | 快速跳转章节或切换文档 |
+| \`A\` | 纸张、字体与版心 | 打开排版设置面板 |
 | \`S\` | 段落专注聚光 | 柔化上下文，聚焦当前段 |
-| \`1\` – \`4\` | 一键切换主题 | 白天纸感与夜间护眼 |
+| \`W\` / \`L\` / \`Y\` | 宽度 / 行距 / 字体 | 单键实时盲调版式 |
+| \`1\` – \`4\` / \`D\` | 纸张主题 / 日夜切换 | 素纸、暖笺、微墨、静夜 |
+| \`J\` / \`K\` / \`N\` / \`P\` | 平滑滚动 / 上下章节 | 全键盘单手流畅阅读 |
 
 - [x] 纯浏览器本地渲染，零后端、零数据上传
 - [x] 全屏沉浸模式与自动隐藏控件
@@ -121,10 +123,12 @@ export function enterQuietReading(markdown: string): void {
 | Key | Action | When to use |
 | --- | --- | --- |
 | \`F\` | Toggle fullscreen | Distraction-free deep reading |
-| \`T\` | Table of contents | Jump across long sections |
-| \`A\` | Typography & themes | Paper, Sepia, Mist, or Ink |
+| \`T\` / \`B\` | Contents / Folder files | Jump across sections or docs |
+| \`A\` | Typography panel | Paper, typeface, width & spacing |
 | \`S\` | Focus dim mode | Keep eyes anchored on one paragraph |
-| \`1\` – \`4\` | Quick theme switch | Match ambient lighting instantly |
+| \`W\` / \`L\` / \`Y\` | Width / Spacing / Font | One-key layout adjustments |
+| \`1\` – \`4\` / \`D\` | Paper themes / Day-Dark | Match ambient lighting instantly |
+| \`J\` / \`K\` / \`N\` / \`P\` | Smooth scroll / Headings | Hands-free keyboard reading |
 
 - [x] Pure client-side rendering with zero uploads
 - [x] Fullscreen reading with auto-hiding chrome
