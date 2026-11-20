@@ -1,0 +1,26 @@
+name: Feature request / 功能建议
+description: Suggest an idea for CalMD / 给 CalMD 提建议
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        CalMD is a reader, not an editor, and runs entirely in the browser: no backend, no uploads, no third-party scripts at runtime. Ideas that need editing tools or a server are unlikely to be taken up.
+        CalMD 是阅读器，不是编辑器，完全在浏览器里运行：没有后端、不上传、运行时不加载第三方脚本。需要编辑工具或服务器的建议多半不会采纳。
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does it solve? / 要解决什么问题
+      description: Describe the situation, not only the feature. / 写清楚遇到的情况，不只是想要的功能。
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would like / 希望怎么做
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Other approaches you considered / 考虑过的其他做法

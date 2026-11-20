@@ -1,45 +1,71 @@
-# CalMD
+<p align="center">
+  <img src="docs/assets/calmd-logo.svg" width="72" height="72" alt="CalMD">
+</p>
 
-A pure, quiet Markdown reader in your browser — built for distraction-free, fullscreen reading.
+<h1 align="center">CalMD</h1>
 
-[简体中文](README.zh-CN.md)
+<p align="center">A calm, browser-based Markdown reader built for full-screen reading</p>
 
-## What It Is
+<p align="center">
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.1.0-476A5B" alt="Version 0.1.0"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/dozybot001/CalMD" alt="License"></a>
+</p>
 
-CalMD opens local `.md` files or entire folders right in your browser and gets out of your way. No split-pane editor chrome, no backend, no uploads — just typography, paper themes, and fullscreen focus.
+<p align="center">
+  <a href="https://tenonai.cn/">Website</a> · <a href="#documentation">Docs</a> · <a href="README.zh-CN.md">简体中文</a>
+</p>
 
-## Quick Start
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/reader-en-dark.webp">
+  <img src="docs/assets/reader-en-light.webp" alt="CalMD showing a sample document on the paper theme: a quiet header bar and a single column of serif text">
+</picture>
 
-Requires Node.js 20+.
+CalMD opens a local `.md` file, or a whole folder, in the browser and shows it as a quiet page for reading. There is no editor toolbar and no backend, and no file leaves your computer. It is for reading long documents such as READMEs, RFCs and essays.
+
+## Quick start
+
+Requires Node.js 20 or later.
 
 ```bash
 npm install
-npm run dev
-```
-
-Build static files into `dist/`:
-
-```bash
-npm run build
-```
-
-Run tests:
-
-```bash
-npm test
+npm run dev        # start the local dev server
+npm run build      # build static files into dist/
+npm test           # run the tests
 ```
 
 ## Features
 
-- **Fullscreen immersion**: Press `F` to enter fullscreen mode; icon-first floating controls fade away automatically as you scroll.
-- **Local file & folder import with live reload**: Drag and drop `.md` files, paste Markdown directly (`Cmd/Ctrl + V` or `V`), or open an entire folder to resolve relative images and `.md` links automatically. In Chromium browsers, opened local files hot-reload in place on save while preserving your scroll position (`R` to reload manually).
-- **Four quiet paper themes & 5-step width**: Switch instantly between Paper, Sepia, Mist, and Ink (`1`–`4`, or `D` for day/dark), plus Serif / Sans / Mono typefaces (`Y`), 5 line widths from Compact to Full (`W`), and visual Tight / Normal / Relaxed line spacing (`L`).
-- **Full single-key keyboard control**: Navigate smoothly (`J`/`K`, `N`/`P` headings, `G`/`Shift+G` top/bottom, `,`/`.` folder docs) and adjust reading settings without lifting your hands from the keyboard (`?` for the full sheet).
-- **Paragraph focus mode**: Press `S` to gently dim surrounding paragraphs and keep your eyes anchored on what you are reading.
-- **On-demand navigation**: Slide-out Table of Contents (`T`) and multi-file switcher (`B`) with active heading tracking and a whisper-thin top progress line.
-- **CommonMark & GFM technical rendering**: Faithful CommonMark/GFM output (no smart-quote or `(c)` mutations), GFM tables, task lists, modern semantic GitHub alerts, syntax-highlighted code blocks with minimal floating copy icons, YAML frontmatter, KaTeX math, lazy-loaded Mermaid diagrams, and click-to-zoom images.
-- **100% client-side & private**: All parsing, sanitization (DOMPurify), and recent reading memory (IndexedDB) stay strictly in your browser.
+- **Full-screen reading**: press `F` to go full screen; the header fades out as you scroll down.
+- **Local files and folders**: drag in or pick a `.md` file, paste with `Cmd/Ctrl + V` or `V`, or open a folder so relative images and links between documents work. In Chromium-based browsers a saved file reloads in place and keeps your scroll position (`R` reloads by hand).
+- **Paper themes and layout**: four color themes (`1`–`4`, `D` switches day and night), serif, sans-serif or monospace text (`Y`), five column widths (`W`) and three line spacings (`L`).
+- **Single-key controls**: `J`/`K` scroll, `N`/`P` jump between sections, `G`/`Shift+G` go to the start or end, `,`/`.` switch documents in a folder; `?` lists every shortcut.
+- **Focus mode**: `S` dims the paragraphs around the one you are reading.
+- **Contents on demand**: a thin progress line at the top, the outline on `T` and the folder's documents on `B`.
+- **Faithful CommonMark and GFM**: tables, task lists, GitHub alerts, front matter, code copy buttons, KaTeX math, Mermaid diagrams on demand and image zoom, without changing what the source says.
+
+## Documentation
+
+- [Changelog](CHANGELOG.md)
+- [Project conventions](AGENTS.md), in Chinese
+
+## Where your data goes
+
+CalMD has no accounts and no server. Documents are parsed and sanitized with DOMPurify in your browser; preferences and the recent-documents list are kept in this browser's storage (localStorage and IndexedDB). Nothing is uploaded.
+
+## Contributing
+
+Bug reports, ideas and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first. Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Security
+
+Please report security problems privately, as described in [SECURITY.md](SECURITY.md), and not in a public issue.
 
 ## License
 
-MIT — Copyright (c) 2026 Tenon Artificial Intelligence Technology Co., Ltd. (长沙榫卯人工智能科技有限公司)
+[MIT](LICENSE). Copyright (c) 2026 Tenon Artificial Intelligence Technology Co., Ltd. (长沙榫卯人工智能科技有限公司)
+
+---
+
+<p align="center">
+  Publisher&emsp;<a href="https://tenonai.cn/"><img src="docs/assets/tenon-mark.svg" width="20" height="20" align="absmiddle" alt="Tenon AI logo"> <b>Tenon AI</b></a>
+</p>

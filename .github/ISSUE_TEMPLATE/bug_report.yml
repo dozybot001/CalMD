@@ -1,0 +1,49 @@
+name: Bug report / 缺陷报告
+description: Something in CalMD does not work as expected / CalMD 有地方不对
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Security problems do not go here: see [SECURITY.md](https://github.com/dozybot001/CalMD/blob/main/SECURITY.md). Do not attach documents you cannot share.
+        安全问题不在这里报告，见 [SECURITY.md](https://github.com/dozybot001/CalMD/blob/main/SECURITY.md)。请不要附上不能公开的文档。
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened / 发生了什么
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce / 复现步骤
+      description: A small Markdown sample that shows the problem helps. / 附一小段能复现问题的 Markdown 最好。
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected / 期望的结果
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: CalMD version or commit / CalMD 版本或提交
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and OS / 浏览器和系统
+      description: For example, Chrome 142 on macOS. / 比如 macOS 上的 Chrome 142。
+    validations:
+      required: true
+  - type: textarea
+    id: more
+    attributes:
+      label: Anything else / 其他
